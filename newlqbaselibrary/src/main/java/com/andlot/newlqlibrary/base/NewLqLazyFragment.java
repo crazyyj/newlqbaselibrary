@@ -16,7 +16,7 @@ public abstract class NewLqLazyFragment extends Fragment {
 
     protected View mView;
     protected Context mContext;
-
+    private boolean isViewInit = false;
     public NewLqLazyFragment() {
     }
 
@@ -24,6 +24,7 @@ public abstract class NewLqLazyFragment extends Fragment {
     public void onAttach(Activity context) {
         super.onAttach(context);
         mContext = context;
+        isViewInit = false;
     }
 
     @Override
@@ -39,6 +40,7 @@ public abstract class NewLqLazyFragment extends Fragment {
         if (0 < layoutId) {
             mView = inflater.inflate(layoutId, null);
             initWidgets(mView);
+            isViewInit = true;
         }
         return mView;
     }
@@ -50,20 +52,19 @@ public abstract class NewLqLazyFragment extends Fragment {
         initListener();
     }
 
-    private boolean firstUserVisible = true;
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (firstUserVisible) {
-
-        } else {
+        if (isViewInit) {
             if (isVisibleToUser) {
                 onInVisibility();
             } else {
                 onVisibility();
             }
+        } else {
+            //View 未初始化时，Fragment 被首次打开
         }
+
     }
 
     private void onInVisibility() {
