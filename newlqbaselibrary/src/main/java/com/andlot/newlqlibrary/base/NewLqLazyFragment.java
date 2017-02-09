@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.andlot.newlqlibrary.utils.L;
+
 /**
  * @author NewLq
  * Fragment 基类 配合Viewpager使用， 懒加载数据 在第一次进入 或用户可见时， 加载最新数据
@@ -16,7 +18,8 @@ public abstract class NewLqLazyFragment extends Fragment {
 
     protected View mView;
     protected Context mContext;
-    private boolean isViewInit = false;
+    private boolean isViewInit;
+
     public NewLqLazyFragment() {
     }
 
@@ -57,23 +60,23 @@ public abstract class NewLqLazyFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isViewInit) {
             if (isVisibleToUser) {
-                onInVisibility();
-            } else {
                 onVisibility();
+            } else {
+                onInVisibility();
             }
         } else {
-            //View 未初始化时，Fragment 被首次打开
+            //View未初始化时, Fragment第一次进入, 可以初始创建一些目录或者文件
         }
 
     }
 
-    private void onInVisibility() {
+    public void initWidgetsBefore() {
+    }
+
+    protected void onInVisibility() {
     }
 
     protected abstract void onVisibility();
-
-    public void initWidgetsBefore() {
-    }
 
     protected abstract void initWidgets(View frgView);
 
@@ -82,5 +85,7 @@ public abstract class NewLqLazyFragment extends Fragment {
     protected abstract void initListener();
 
     protected abstract int getContentViewId();
+
+    protected abstract NewLqLazyFragment getInstance(Bundle bundle);
 
 }

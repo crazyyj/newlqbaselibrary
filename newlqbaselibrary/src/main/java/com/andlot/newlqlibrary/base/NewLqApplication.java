@@ -12,12 +12,10 @@ import android.view.KeyEvent;
 public abstract class NewLqApplication extends Application {
 
     private static Context mAppContext;
-
+    private static int mMainThreadId;
     private static Handler mHandler;
-
     private static Thread mMainThread;
 
-    private static int mMainThreadId;
 
     @Override
     public void onCreate() {

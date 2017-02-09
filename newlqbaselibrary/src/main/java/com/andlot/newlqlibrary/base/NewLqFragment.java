@@ -22,7 +22,7 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
     protected Context mContext;
     protected Activity fragActivity;
 
-    private boolean isViewInit = false;
+    private boolean isViewInit;
 
     public NewLqFragment() {
     }
@@ -39,8 +39,13 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWidgetsBefore();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mView = super.onCreateView(inflater, container, savedInstanceState);
         int layoutId = getContentViewId();
-        if (0 >= layoutId){
+        if (0 > layoutId) {
             TextView errorText = new TextView(mContext);
             errorText.setText(this.getClass().getSimpleName() + "的Fragment_LayoutId出现错误");
             errorText.setGravity(Gravity.CENTER);
@@ -51,20 +56,16 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
             errorTextLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             errorText.setLayoutParams(errorTextLayoutParams);
             mView = errorText;
-        } else{
+        } else {
             mView = View.inflate(mContext, layoutId, null);
+            try {
+                return mView;
+            } finally {
+                initWidgets(mView);
+                isViewInit = true;
+            }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        try {
-            return mView;
-        }finally {
-            initWidgets(mView);
-            isViewInit = true;
-        }
+        return mView;
     }
 
     @Override
@@ -93,7 +94,7 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
                 onVisibility();
             }
         } else {
-            //View未初始化时, Fragment第一次进入
+            //View未初始化时, Fragment第一次进入, 可以初始创建一些目录或者文件
         }
     }
 
