@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class CommonUtils {
 
     public static String getText(TextView tv){
-        return tv.getText().toString().trim();
+        return tv.getText().toString().trim().intern();
     }
 
     /**

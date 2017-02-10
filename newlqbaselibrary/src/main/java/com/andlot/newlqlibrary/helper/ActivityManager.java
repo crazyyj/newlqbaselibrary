@@ -7,10 +7,8 @@ import android.app.Activity;
 
 public class ActivityManager {
 
-    private static final String TAG = "ActivityManager";
-
     private static ActivityManager instance = null;
-    private static List<Activity> mActivities = new LinkedList<Activity>();
+    private static LinkedList<Activity> mActivities = new LinkedList<Activity>();
 
     private ActivityManager() {}
 
@@ -37,10 +35,11 @@ public class ActivityManager {
         mActivities.add(activity);
     }
 
-    public synchronized void removeActivity(Activity activity) {
+    public synchronized boolean removeActivity(Activity activity) {
         if (mActivities.contains(activity)) {
-            mActivities.remove(activity);
+            return mActivities.remove(activity);
         }
+        return false;
     }
 
     public synchronized void clear() {

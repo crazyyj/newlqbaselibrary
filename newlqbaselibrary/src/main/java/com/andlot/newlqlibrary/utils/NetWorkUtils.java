@@ -1,6 +1,9 @@
 package com.andlot.newlqlibrary.utils;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,7 +12,7 @@ import android.telephony.TelephonyManager;
 import java.util.List;
 
 /**
- * Created by dell on 2016/1/13.
+ * Created by newlq on 2016/1/13.
  * 必要权限
  *  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
  */
@@ -61,23 +64,22 @@ public class NetWorkUtils {
                 .getNetworkType() == TelephonyManager.NETWORK_TYPE_UMTS);
     }
 
+
     /**
      * 判断当前网络是否是wifi网络
-     * if(activeNetInfo.getType()==ConnectivityManager.TYPE_MOBILE) { //判断3G网
+     * if(activeNetInfo.getType()==ConnectivityManager.TYPE_MOBILE) { //判断手机流量网络
      *
      * @param context
      * @return boolean
      */
     public static boolean isWifi(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetInfo != null
-                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            return true;
-        }
-        return false;
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null)
+            return false;
+        return cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+
     }
+
 
     /**
      * 判断当前网络是否是3G网络
@@ -95,6 +97,40 @@ public class NetWorkUtils {
         return false;
     }
 
+
+    /**
+     * 判断网络是否连接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isConnected(Context context) {
+
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (null != connectivity) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (null != info && info.isConnected()) {
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 打开网络设置界面
+     */
+    public static void openSetting(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        ComponentName cm = new ComponentName("com.android.settings",
+                "com.android.settings.WirelessSettings");
+        intent.setComponent(cm);
+//		intent.setAction(Intent.ACTION_VIEW);
+        activity.startActivityForResult(intent, 0);
+    }
 
 //另外还有两个方法判断网络是否可用：
 

@@ -13,7 +13,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.andlot.newlqlibrary.base.NewLqApplication;
+import com.andlot.newlqlibrary.helper.ApplicationCompat;
 
 /**
  * Created by newlq on 2016/10/1.
@@ -21,29 +21,31 @@ import com.andlot.newlqlibrary.base.NewLqApplication;
 
 public class UIUtils {
 
-    private UIUtils(){}
-
-    public static Context getContext(){
-        return NewLqApplication.getAppContext();
+    private UIUtils() {
     }
 
-    public static Resources getResources(){
+    public static Context getContext() {
+        return ApplicationCompat.getContext();
+    }
+
+    public static Resources getResources() {
         return getContext().getResources();
     }
 
-    public static Handler getHandler(){
-        return NewLqApplication.getmHandler();
+    public static Handler getHandler() {
+        return ApplicationCompat.getHandler();
     }
-    public static boolean isMainThread(){
-        return NewLqApplication.getmMainThreadId() == android.os.Process.myTid();
+
+    public static boolean isMainThread() {
+        return ApplicationCompat.getMainThreadId() == android.os.Process.myTid();
     }
 
 
-    public static String getString(int strRes){
+    public static String getString(int strRes) {
         return getContext().getString(strRes);
     }
 
-    public static Drawable getDrawable(int DrawableId){
+    public static Drawable getDrawable(int DrawableId) {
         return getResources().getDrawable(DrawableId);
     }
 
@@ -57,25 +59,25 @@ public class UIUtils {
         return getResources().getStringArray(resId);
     }
 
-    public static void runOnUiThread(Runnable r){
-        if (isMainThread()){
+    public static void runOnUIThread(Runnable r) {
+        if (isMainThread()) {
             r.run();
         } else {
             getHandler().post(r);
         }
     }
 
-    public static View inflate(int layoutId){
+    public static View inflate(int layoutId) {
         return View.inflate(getContext(), layoutId, null);
     }
 
     /**
      * 获得屏幕高度
-     * @param context 上下文
+     *
      * @return 屏幕高度
      */
-    public static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    public static int getScreenWidth() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.widthPixels;
@@ -87,8 +89,8 @@ public class UIUtils {
      * @param context 上下文
      * @return 屏幕高度
      */
-    public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    public static int getScreenHeight() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.heightPixels;
@@ -96,6 +98,7 @@ public class UIUtils {
 
     /**
      * 获得状态栏的高度
+     *
      * @return 返回状态栏的高度
      */
     public static int getStatusHeight() {
@@ -105,7 +108,7 @@ public class UIUtils {
             Object object = clazz.newInstance();
             int height = Integer.parseInt(clazz.getField("status_bar_height")
                     .get(object).toString());
-            statusHeight = UIUtils.getResources().getDimensionPixelSize(height);
+            statusHeight = getResources().getDimensionPixelSize(height);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,20 +125,21 @@ public class UIUtils {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
-        Bitmap bmp = view.getDrawingCache();
-        int width = getScreenWidth(activity);
-        int height = getScreenHeight(activity);
-        Bitmap bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
+//        Bitmap bmp = view.getDrawingCache();
+//        int width = getScreenWidth();
+//        int height = getScreenHeight();
+        Bitmap bp = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, getScreenWidth(), getScreenHeight());
         view.destroyDrawingCache();
         return bp;
     }
 
     /**
      * 获取状态栏高度
+     *
      * @param act Activity 对象
      * @return 顶部Y坐标， 相当于高度
      */
-    public static int getStatusBarHight(Activity act){
+    public static int getStatusBarHight(Activity act) {
         Rect frame = new Rect();
         act.getWindow().getDecorView()
                 .getWindowVisibleDisplayFrame(frame);
@@ -148,8 +152,7 @@ public class UIUtils {
      * @param activity 当前页面的Activity
      * @return
      */
-    public static Bitmap snapShotWithoutStatusBar(Activity activity)
-    {
+    public static Bitmap snapShotWithoutStatusBar(Activity activity) {
         View mDecorView = activity.getWindow().getDecorView();
         mDecorView.setDrawingCacheEnabled(true);
         mDecorView.buildDrawingCache();
@@ -158,22 +161,21 @@ public class UIUtils {
         mDecorView.getWindowVisibleDisplayFrame(frame);
         int statusBarHeight = frame.top;
 
-        int width = getScreenWidth(activity);
-        int height = getScreenHeight(activity);
+        int width = getScreenWidth();
+        int height = getScreenHeight();
         Bitmap bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width,
                 height - statusBarHeight);
         mDecorView.destroyDrawingCache();
         return bp;
-
     }
+
     /**
      * dp转px
      *
      * @param dpVal
      * @return
      */
-    public static int dp2px(float dpVal)
-    {
+    public static int dp2px(float dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, UIUtils.getResources().getDisplayMetrics());
     }
@@ -183,8 +185,7 @@ public class UIUtils {
      *
      * @return
      */
-    public static int sp2px(float spVal)
-    {
+    public static int sp2px(float spVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 spVal, UIUtils.getResources().getDisplayMetrics());
     }
@@ -195,8 +196,7 @@ public class UIUtils {
      * @param pxVal
      * @return
      */
-    public static float px2dp(float pxVal)
-    {
+    public static float px2dp(float pxVal) {
         final float scale = UIUtils.getResources().getDisplayMetrics().density;
         return (pxVal / scale);
     }
@@ -207,12 +207,13 @@ public class UIUtils {
      * @param pxVal
      * @return
      */
-    public static float px2sp(float pxVal)   {
+    public static float px2sp(float pxVal) {
         return (pxVal / UIUtils.getResources().getDisplayMetrics().scaledDensity);
     }
 
     /**
      * 判断是否是平板
+     *
      * @return
      */
     public static boolean isTablet() {

@@ -12,19 +12,20 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 
 public class DateUtils {
+
 	/** 
      * 时间戳转换成日期格式字符串 
-     * @param seconds 精确到秒的字符串 
-     * @param formatStr 
+     * @param seconds 毫秒
+     * @param format 可以传null 或 ""
      * @return 
      */  
-    public static String timeStamp2Date(String seconds,String format) {  
+    public static String timeStamp2Date(String seconds, String format) {
         if(seconds == null || seconds.isEmpty() || seconds.equals("null")) 
         	return "";  
         if(format == null || format.isEmpty()) 
         	format = "yyyy-MM-dd HH:mm:ss";  
         SimpleDateFormat sdf = new SimpleDateFormat(format);  
-        return sdf.format(new Date(Long.valueOf(seconds+"000")));
+        return sdf.format(new Date(Long.parseLong(seconds)));
     }
     
     /**
@@ -54,7 +55,7 @@ public class DateUtils {
 
     /** 
      * 日期格式字符串转换成时间戳 
-     * @param date 字符串日期 
+     * @param date_str 字符串日期
      * @param format 如：yyyy-MM-dd HH:mm:ss 
      * @return 
      */  
@@ -116,21 +117,4 @@ public class DateUtils {
     	return sdf.format(new Date());
     }
     
-    /**
-     * 验证身份证最后一位
-     * @author NewLq
-     */
-	static int[] weight={7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2};    //十七位数字本体码权重
-	static char[] validate={ '1','0','X','9','8','7','6','5','4','3','2'};    //mod11,对应校验码字符值    
-    
-    public char getValidateCode(String id17){
-        int sum = 0;
-        int mode = 0;
-        for(int i=0; i<id17.length(); i++){
-            sum=sum + Integer.parseInt(String.valueOf(id17.charAt(i))) * weight[i];
-        }
-        mode = sum % 11;
-        return validate[mode];
-    }
-
 }

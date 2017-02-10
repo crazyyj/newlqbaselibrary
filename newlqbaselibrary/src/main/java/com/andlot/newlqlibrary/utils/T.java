@@ -1,45 +1,41 @@
 package com.andlot.newlqlibrary.utils;
 
-import android.graphics.Color;
-//import android.support.design.widget.Snackbar;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+//import android.support.design.widget.Snackbar;
 //import com.andlot.newlqlibrary.R;
-import com.andlot.newlqlibrary.base.NewLqApplication;
 
 /**
  * Tip 工具类， 更符合项目要求的系统Toast功能
  */
 public class T {
 
-	private T(){}
-	private static Toast t;
+    private T() {
+    }
 
-	public static void show_short(String msg){
-			if (t == null) {
-				t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_SHORT);
-			}else{
-				t.cancel();
-				t = null;
-				t = Toast.makeText(NewLqApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
-			}
-		t.show();
-	}
+    private static Toast t;
 
-	public static void show_long(String msg){
-			if (t == null) {
-				t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_LONG);
-			}else{
-				t.setDuration(Toast.LENGTH_LONG);
-				t.setText(msg);
-			}
-		t.show();
-	}
-//
+    public static void show_short(String msg) {
+        if (t == null) {
+            t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_SHORT);
+        } else {
+            t.cancel();
+            t = null;
+            t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_SHORT);
+        }
+        t.show();
+    }
+
+    public static void show_long(String msg) {
+        if (t == null) {
+            t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_LONG);
+        } else {
+            t.setDuration(Toast.LENGTH_LONG);
+            t.setText(msg);
+        }
+        t.show();
+    }
+
 //	private static Snackbar snackBar;
 //
 //	public static void showSnackBar(View viewArgs, String toast) {

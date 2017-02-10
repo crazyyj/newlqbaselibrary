@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.andlot.newlqlibrary.helper.ActivityManager;
 import com.andlot.newlqlibrary.utils.CommonUtils;
 
 /**
@@ -31,6 +32,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         if (0 >= layoutId) {
             throw new IllegalArgumentException("Activity布局文件有问题");
         }
+        ActivityManager.getInstance().addActivity(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId);
         mHandler = new Handler(this);
@@ -172,6 +174,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityManager.getInstance().removeActivity(this);
         mHandler.removeCallbacksAndMessages(null);
     }
 
