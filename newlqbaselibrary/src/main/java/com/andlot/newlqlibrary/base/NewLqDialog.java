@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  */
 
-public abstract class NewLqDialog extends DialogFragment {
+public class NewLqDialog extends DialogFragment {
 
     /**
      *
@@ -49,11 +49,13 @@ public abstract class NewLqDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        int layoutId = getDialogLayoutId();
-        if (layoutId > 0) {
-            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);  //去掉标题
-            view = inflater.inflate(layoutId, container);
-            initWidgets(view);
+        if (CREATE_TYPE_DEFAULT == CREATE_TYPE_VIEW) {
+            int layoutId = getDialogLayoutId();
+            if (layoutId > 0) {
+                getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);  //去掉标题
+                view = inflater.inflate(layoutId, container);
+                initWidgets(view);
+            }
         }
         return view;
     }
@@ -63,13 +65,13 @@ public abstract class NewLqDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = getNewlqDialog(savedInstanceState);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (dialog == null) {
+        if (CREATE_TYPE_DEFAULT == CREATE_TYPE_VIEW ||dialog == null) {
             dialog = super.onCreateDialog(savedInstanceState);
         }
         return dialog;
     }
 
-    protected abstract int getDialogLayoutId();
+    protected int getDialogLayoutId(){return 0;}
     protected int initWidgets(View view){return 0;}
 
     protected NewLqAlterDialog getNewlqDialog(Bundle savedInstanceState){return null;}
