@@ -17,11 +17,11 @@ public class IOUtils {
     public static final String WEBP = ".webp";
     public static final String APK = ".apk";
 
-    public static final String sdCardPath =
+    public static final String SDCardPath =
             Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
 
     public static final String PROJECT_DIR =
-            sdCardPath + UIUtils.getContext().getPackageName() + File.separator;
+            SDCardPath + UIUtils.getContext().getPackageName() + File.separator;
 
     private IOUtils() {}
 
