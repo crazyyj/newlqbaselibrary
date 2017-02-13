@@ -25,10 +25,9 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
 
     //需要保存的保存的图片
     private Bitmap mBitmap;
-    //图片的路径对象
-    private File filePath;
     //文件夹路径
     private String savePath;
+    private File imageFile;
 
     public SaveBitmapTask(Bitmap bm) {
         mBitmap = bm;
@@ -49,11 +48,11 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
 
         if (mBitmap != null) {
             try {
-                filePath = new File(savePath + buildTargetDir(params));
+                File filePath = new File(savePath + buildTargetDir(params));
                 if (filePath.exists() || filePath.mkdirs()){
-                    File imageFile = new File(filePath, params[params.length - 1]);
+                    imageFile = new File(filePath, params[params.length - 1]);
                     stream = new FileOutputStream(imageFile);
-                    bmSaveSuccess = mBitmap.compress(CompressFormat.JPEG, Image_Quality, stream);
+                    bmSaveSuccess = mBitmap.compress(CompressFormat.JPEG, Image_Quality, stream) && imageFile.exists();
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -68,6 +67,11 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
         T.show_short(result ? "图像保存成功" : "图像保存失败");
+        if (result && imageFile != null && imageFile.exists()) {
+            if (mSaveFinishListener != null) {
+                mSaveFinishListener.saveFinishListener(imageFile.getAbsolutePath());
+            }
+        }
         onRecycle();
     }
 
@@ -111,13 +115,22 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
         return temp_dir;
     }
 
+    private SaveFinishListener mSaveFinishListener;
+    private ProgressUpdateListener mProgressUpdateListener;
+
+    public void setSaveFinishListener(SaveFinishListener saveFinishListener) {
+        this.mSaveFinishListener = saveFinishListener;
+    }
+
     public void setProgressUpdateListener(ProgressUpdateListener progressUpdateListener) {
         this.mProgressUpdateListener = progressUpdateListener;
     }
 
-    ProgressUpdateListener mProgressUpdateListener;
-
     public interface ProgressUpdateListener{
         void progressUpdateListener(Integer... values);
+    }
+
+    public interface SaveFinishListener{
+        void saveFinishListener(String path);
     }
 }

@@ -12,23 +12,12 @@ import com.andlot.newlqlibrary.utils.IOUtils;
 
 public class CameraHelper {
 
-//	private static CameraHelper helper;
-
 	public final static int CROP_IMAGE_REQUESTCODE = 10;
 	public final static int OPEN_GALLER_REQUESTCODE = 20;
 	public final static int OPEN_CAPTURE_REQUESTCODE = 30;
 
 	private CameraHelper() {
 	}
-
-//	public static CameraHelper getIns() {
-//		if (helper == null) {
-//			synchronized (CameraHelper.class) {
-//				helper = (helper == null) ? new CameraHelper() : helper;
-//			}
-//		}
-//		return helper;
-//	}
 
 	/**
 	 * 调用系统裁剪图片, 一般用于头像上传前
