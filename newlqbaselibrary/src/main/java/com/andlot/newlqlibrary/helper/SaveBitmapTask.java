@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author newlq
@@ -25,6 +28,7 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
 
     //需要保存的保存的图片
     private Bitmap mBitmap;
+
     //文件夹路径
     private String savePath;
     private File imageFile;
@@ -50,7 +54,11 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
             try {
                 File filePath = new File(savePath + buildTargetDir(params));
                 if (filePath.exists() || filePath.mkdirs()){
-                    imageFile = new File(filePath, params[params.length - 1]);
+                    if (params[params.length - 1].endsWith(IOUtils.JPG)) {
+                        imageFile = new File(filePath, params[params.length - 1]);
+                    } else {
+                        imageFile = new File(filePath, generateBMFileName());
+                    }
                     stream = new FileOutputStream(imageFile);
                     bmSaveSuccess = mBitmap.compress(CompressFormat.JPEG, Image_Quality, stream) && imageFile.exists();
                 }
@@ -109,10 +117,22 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
      */
     private String buildTargetDir(String[] dirs){
         String temp_dir = "";
-        for (int i = 0; i < dirs.length - 1; i++){
+        int length ;
+        if (dirs[dirs.length - 1].endsWith(IOUtils.JPG)) {
+            length = dirs.length - 1;
+        } else {
+            length = dirs.length;
+        }
+        for (int i = 0; i < length; i++){
             temp_dir += dirs[i] + File.separator;
         }
         return temp_dir;
+    }
+
+    private String generateBMFileName(){
+        return new SimpleDateFormat("yyMMddHHmmssSS")
+                .format(new Date(System.currentTimeMillis())) + IOUtils.JPG;
+
     }
 
     private SaveFinishListener mSaveFinishListener;

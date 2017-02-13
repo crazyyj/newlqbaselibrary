@@ -15,13 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by newWiner on 2016/12/1.
  * Fragment工厂类
  * 传入Fragment 全路径 和参数 参数 应对于Fragment的 setArgment()方法的参数， Bundle可不传
- *  可以额外在项目中添加 一个配置文件 传入 的全路径为 一个常量 这样 就可以实现 修改常量值 打开 指定的Fragment
+ * 可以额外在项目中添加 一个配置文件 传入 的全路径为 一个常量 这样 就可以实现 修改常量值 打开 指定的Fragment
  */
 
 public class FragmentFactory {
 
     private static final Map<Class<? extends NewLqFragment>, Fragment> fragmentContainer = new ConcurrentHashMap<>();
-    private static final Map<String, Fragment> fragAllWayContainer = new ConcurrentHashMap<>();
+    private static final Map<String, Fragment> fragmentAllWayContainer = new ConcurrentHashMap<>();
 
     private FragmentFactory(){}
 
@@ -34,10 +34,10 @@ public class FragmentFactory {
      */
     public static Fragment createFragment(String fragAllWay, Bundle bunlde) {
         Fragment fragment = null;
-        if (fragAllWayContainer.containsKey(fragAllWay)) {
-            fragment = fragAllWayContainer.get(fragAllWay);
+        if (fragmentAllWayContainer.containsKey(fragAllWay)) {
+            fragment = fragmentAllWayContainer.get(fragAllWay);
             if ((bunlde != null & bunlde.size() > 0) & fragment.isAdded()) {
-                throw new IllegalStateException("fragment已经被添加, 不可调用setArgment(Bundle b)");
+                throw new IllegalStateException("fragment已经被添加, 不可调用setArgment(Bundle bundle)");
             }
             return fragment;
         }
@@ -55,9 +55,9 @@ public class FragmentFactory {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } finally {
-            if (fragAllWayContainer != null && !TextUtils.isEmpty(fragAllWay)
-                    && !fragAllWayContainer.containsKey(fragAllWay) && fragment != null)
-                fragAllWayContainer.put(fragAllWay, fragment);
+            if (fragmentAllWayContainer != null && !TextUtils.isEmpty(fragAllWay)
+                    && !fragmentAllWayContainer.containsKey(fragAllWay) && fragment != null)
+                fragmentAllWayContainer.put(fragAllWay, fragment);
             return fragment;
         }
     }
@@ -73,7 +73,7 @@ public class FragmentFactory {
         }
         try {
             Method newInstance = fragClazz.getMethod("newInstance", Bundle.class);
-//            newInstance.setAccessible(true);
+            newInstance.setAccessible(true);
             fragment = (Fragment) newInstance.invoke(fragClazz, bunlde);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
