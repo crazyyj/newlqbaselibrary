@@ -132,7 +132,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
 
 
-    public boolean isShouldHideInput(View v, MotionEvent event) {
+    private boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = {0, 0};
             // 获取输入框当前的location位置
@@ -157,6 +157,22 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
     protected void goBack(View v){
         onBackPressed();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            onReleaseRes();
+        }
+    }
+
+    /**
+     * 释放资源
+     */
+    public void onReleaseRes(){
+
+    }
+
 
     @Override
     public void onClick(View v) {

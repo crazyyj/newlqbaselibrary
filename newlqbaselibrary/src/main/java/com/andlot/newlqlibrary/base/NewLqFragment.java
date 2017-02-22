@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.andlot.newlqlibrary.utils.L;
-
 /**
  * @author NewLq
  * 简单封装了Fragment 基类， 懒加载模式
@@ -97,7 +95,20 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
             //View未初始化时, Fragment第一次进入, 可以初始创建一些目录或者文件
         }
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (((NewLqActivity) mContext).isFinishing()) {
+            onReleaseRes();
+        }
+    }
 
+    /**
+     * 释放资源
+     */
+    protected void onReleaseRes(){
+
+    }
     /**
      * 加载页面可见,显示
      * 参数 没有savedInstanceState 所以请求网络在此， 不处理其他信息

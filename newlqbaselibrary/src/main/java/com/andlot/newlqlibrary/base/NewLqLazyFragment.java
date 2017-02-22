@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.andlot.newlqlibrary.utils.L;
-
 /**
  * @author NewLq
  * Fragment 基类 配合Viewpager使用， 懒加载数据 在第一次进入 或用户可见时， 加载最新数据
@@ -67,6 +65,21 @@ public abstract class NewLqLazyFragment extends Fragment {
         } else {
             //View未初始化时, Fragment第一次进入, 可以初始创建一些目录或者文件
         }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (((NewLqActivity) mContext).isFinishing()) {
+            onReleaseRes();
+        }
+    }
+
+    /**
+     * 释放资源
+     */
+    protected void onReleaseRes(){
 
     }
 
