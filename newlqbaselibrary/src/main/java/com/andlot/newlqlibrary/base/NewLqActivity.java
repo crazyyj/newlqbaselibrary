@@ -22,8 +22,8 @@ import com.andlot.newlqlibrary.utils.CommonUtils;
  */
 public abstract class NewLqActivity extends AppCompatActivity implements View.OnClickListener, Handler.Callback{
 
-    protected FragmentManager mFragmentManager;
     protected Handler mHandler;
+    protected FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +32,9 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         if (0 >= layoutId) {
             throw new IllegalArgumentException("Activity布局文件有问题");
         }
-        ActivityManager.getInstance().addActivity(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId);
+        ActivityManager.getInstance().addActivity(this);
         mHandler = new Handler(this);
         mFragmentManager = getSupportFragmentManager();
 
