@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author NewLq
  *         Created by NewLq on 2016/1/8.
  */
-public class StringUtils {
+public class TextUtils {
 
 
     /**
@@ -32,6 +32,10 @@ public class StringUtils {
             str.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return str;
+    }
+
+    public static final boolean isEmpty(String text){
+        return "null".equalsIgnoreCase(text) || TextUtils.isEmpty(text);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.andlot.newlqlibrary.base;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +15,7 @@ import android.view.Window;
 import android.widget.EditText;
 
 import com.andlot.newlqlibrary.helper.ActivityManager;
+import com.andlot.newlqlibrary.loader.DataLoader;
 import com.andlot.newlqlibrary.utils.CommonUtils;
 
 /**
@@ -24,6 +27,9 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
     protected Handler mHandler;
     protected FragmentManager mFragmentManager;
+    private boolean resReleased  = false;
+    private final int LOADER_ID = ((int) System.currentTimeMillis());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,36 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         initWidgets();
         handlerIntent(getIntent());
         initProjectFromAsync(savedInstanceState);
+        getLoaderManager().initLoader(LOADER_ID, null, mLoaderCallbacks);
+
+    }
+
+    private LoaderManager.LoaderCallbacks mLoaderCallbacks= new LoaderManager.LoaderCallbacks<Object>() {
+
+        @Override
+        public Loader<Object> onCreateLoader(int id, Bundle args) {
+            return new DataLoader<Object>(getApplicationContext()){
+
+                @Override
+                public Object loadInBackground() {
+                    return runOnWorkThread();
+                }
+            };
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Object> loader, Object data) {
+            
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Object> loader) {
+
+        }
+    };
+
+    protected Object runOnWorkThread() {
+        return null;
     }
 
     /**
@@ -99,6 +135,21 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         startActivity(intent);
     }
 
+    /**
+     * 隐式意图打开其他
+     * @param action
+     */
+    protected void gotoOther(String action){
+        if (!com.andlot.newlqlibrary.utils.TextUtils.isEmpty(action)) {
+            Intent intent = new Intent(action);
+            if (!(getPackageManager().queryIntentActivities(intent, 0).isEmpty())) {
+                startActivity(intent);
+            }else if (!(getPackageManager().queryIntentServices(intent, 0).isEmpty())){
+                startService(intent);
+            }
+        }
+    }
+
     public void finish(int animIn, int animOut) {
         super.finish();
         this.overridePendingTransition(animIn, animOut);
@@ -115,7 +166,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
     }
 
     /**
-     *  控制点击EditText以外的部分 收回软键盘
+     * 控制点击EditText以外的部分 收回软键盘
      * @param ev
      * @return
      */
@@ -151,7 +202,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
     }
 	
     /**
-     * Title 回退按钮的 点击事件
+     * Title 回退按钮的 点击事件, 可能会被弃用
      * @param v 响应回退点击的View
      */
     protected void goBack(View v){
@@ -170,7 +221,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
      * 释放资源
      */
     public void onReleaseRes(){
-
+        resReleased = true;
     }
 
 
@@ -192,6 +243,9 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         super.onDestroy();
         ActivityManager.getInstance().removeActivity(this);
         mHandler.removeCallbacksAndMessages(null);
+        if (!resReleased) {
+            onReleaseRes();
+        }
     }
 
 }

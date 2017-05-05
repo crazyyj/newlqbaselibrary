@@ -2,25 +2,17 @@ package com.andlot.newlqlibrary.loader;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.CursorLoader;
 
 /**
  * Created by newlq on 2017/3/15.
  */
 
-public class DataLoader<D> extends AsyncTaskLoader<D> {
+public abstract class DataLoader<D> extends AsyncTaskLoader<D> {
 
     private D mD;
 
-    public DataLoader(Context context, D d) {
+    public DataLoader(Context context) {
         super(context);
-        mD = d;
-    }
-
-
-    @Override
-    public D loadInBackground() {
-        return null;
     }
 
     @Override

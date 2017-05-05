@@ -36,7 +36,7 @@ public abstract class LoadingPageView extends ViewFlipper {
 
     }
 
-    protected View Inflate(int layoutId){
+    protected View inflate(int layoutId){
         View view = views.get(layoutId);
         if (view == null) {
             view = View.inflate(getContext(), layoutId, null);
@@ -46,26 +46,26 @@ public abstract class LoadingPageView extends ViewFlipper {
     }
 
     protected View getNetErrorView(){
-        return Inflate(R.layout.default_error_view);
+        return inflate(R.layout.default_error_view);
     }
 
     protected View getEmptyView(){
-        return Inflate(R.layout.default_empty_view);
+        return inflate(R.layout.default_empty_view);
     }
 
     protected View getLoadingView(){
-        return Inflate(R.layout.default_loading_view);
+        return inflate(R.layout.default_loading_view);
     }
 
     protected abstract View getView();
 
 
     public abstract static class PageStatusViewListener{
-        protected abstract void onLoadingStart();
         protected abstract void onLoadingEnd();
+        protected abstract void onLoadingFail();
+        protected abstract void onLoadingStart();
         protected abstract void onLoadingError();
         protected abstract void onLoadingSuccess();
-        protected abstract void onLoadingFail();
     }
 
 }
