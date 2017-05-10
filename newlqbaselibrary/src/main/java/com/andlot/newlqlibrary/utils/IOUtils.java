@@ -1,6 +1,5 @@
 package com.andlot.newlqlibrary.utils;
 
-import android.graphics.Bitmap;
 import android.os.Environment;
 
 import java.io.Closeable;
@@ -15,6 +14,7 @@ public class IOUtils {
     public static final String JPG = ".jpg";
     public static final String PNG = ".png";
     public static final String WEBP = ".webp";
+
     public static final String APK = ".apk";
 
     public static final String SDCardPath =
@@ -35,17 +35,6 @@ public class IOUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public interface OnSaveFileListener {
-
-        public static final int SD_USABLE = 0;
-        public static final int SD_DISABLED = 1;
-        public static final int STREAM_FAIL = 2;
-
-        void success(Bitmap bm, String path);
-
-        void fail(int reason);
     }
 
     public interface FileType {

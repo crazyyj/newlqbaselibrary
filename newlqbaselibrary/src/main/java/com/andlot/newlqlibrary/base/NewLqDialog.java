@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,8 +39,8 @@ public class NewLqDialog extends DialogFragment {
 
 
 
-    public NewLqDialog(@CreateDialogType int type) {
-        CREATE_TYPE_DEFAULT = type;
+    public NewLqDialog() {
+
     }
 
     @Nullable

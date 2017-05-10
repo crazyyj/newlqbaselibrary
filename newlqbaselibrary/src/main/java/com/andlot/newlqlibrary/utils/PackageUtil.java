@@ -67,21 +67,21 @@ public class PackageUtil {
 
 	/**
 	 * 检查当前设备是否有摄像头
+	 * @see PackageManager#FEATURE_CAMERA  特性常量
 	 * @return
-	 * @see PackageManager.FEATURE_ 特性常量
 	 */
-	public static boolean checkCameraHardware(String isHasFeature) {
+	public static boolean hardwareEnable(String isHasFeature) {
         return UIUtils.getContext().getPackageManager().hasSystemFeature(isHasFeature);
 	}
 	
 	/** 
      * 获取应用程序名称 
      */  
-    public static String getAppName(Context context) {
+    public static String getAppName() {
         try {
-            PackageManager packageManager = context.getPackageManager();  
-            PackageInfo packageInfo = packageManager.getPackageInfo(  
-                    context.getPackageName(), 0);  
+			Context context = UIUtils.getContext();
+			PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
             int labelRes = packageInfo.applicationInfo.labelRes;  
             return context.getResources().getString(labelRes);
         } catch (NameNotFoundException e) {

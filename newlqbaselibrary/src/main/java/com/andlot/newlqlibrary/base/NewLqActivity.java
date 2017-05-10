@@ -124,6 +124,12 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handlerIntent(intent);
+    }
+
     protected void goAct(Class<?> clazz) {
         goActWithData(clazz, null);
     }

@@ -1,9 +1,7 @@
 package com.andlot.newlqlibrary.helper;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 
 /**
  * Created by newlq on 2017/2/9.
@@ -17,7 +15,7 @@ public class ApplicationCompat {
     private static Thread mMainThread;
     private static Context mApplication;
 
-    public static void init(Context context){
+    public final static void init(Context context){
         mHandler = new Handler();
         mMainThread = Thread.currentThread();
         mMainThreadId = android.os.Process.myTid();
