@@ -86,6 +86,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
     /**
      * 处理被打开的Intent
+     * 处理Intent 附带过来的数据
      */
     protected void handlerIntent(Intent otherIntent){
 
