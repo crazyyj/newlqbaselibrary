@@ -15,7 +15,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author newlq
@@ -74,7 +73,7 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
-        T.show_short(result ? "图像保存成功" : "图像保存失败");
+        T.showTips(result ? "图像保存成功" : "图像保存失败");
         if (result && imageFile != null && imageFile.exists()) {
             if (mSaveFinishListener != null) {
                 mSaveFinishListener.saveFinishListener(imageFile.getAbsolutePath());

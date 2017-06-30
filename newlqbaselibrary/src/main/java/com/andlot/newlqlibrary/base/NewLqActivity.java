@@ -6,12 +6,12 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 
 import com.andlot.newlqlibrary.helper.ActivityManager;
@@ -38,7 +38,6 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         if (0 >= layoutId) {
             throw new IllegalArgumentException("Activity布局文件有问题");
         }
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId);
         ActivityManager.getInstance().addActivity(this);
         mHandler = new Handler(this);
@@ -66,7 +65,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
         @Override
         public void onLoadFinished(Loader<Object> loader, Object data) {
-            
+
         }
 
         @Override
@@ -77,6 +76,17 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
 
     protected Object runOnWorkThread() {
         return null;
+    }
+
+
+    /**
+     *
+     * @param id View的id
+     * @param <T> View的子类
+     * @return View对象
+     */
+    public <T extends View> T findViewById_self(@IdRes int id) {
+        return (T) super.findViewById(id);
     }
 
     /**

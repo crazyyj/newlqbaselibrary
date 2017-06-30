@@ -15,7 +15,7 @@ public class T {
 
     private static Toast t;
 
-    public static void show_short(String msg) {
+    public static void showTips(String msg) {
         if (t == null) {
             t = Toast.makeText(UIUtils.getContext(), msg, Toast.LENGTH_SHORT);
         } else {

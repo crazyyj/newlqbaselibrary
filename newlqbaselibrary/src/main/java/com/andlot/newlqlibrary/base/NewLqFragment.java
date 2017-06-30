@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +21,17 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
     protected Context mContext;
     protected Activity fragActivity;
 
-    private boolean isViewInit;
+    private volatile boolean isViewInited;
 
-    public NewLqFragment() {
+    private NewLqFragment() {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context activity) {
         super.onAttach(activity);
         this.mContext = activity;
-        fragActivity = activity;
-        isViewInit = false;
+        fragActivity = ((AppCompatActivity) activity);
+        isViewInited = false;
     }
 
     @Override
@@ -43,7 +44,7 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = super.onCreateView(inflater, container, savedInstanceState);
         int layoutId = getContentViewId();
-        if (0 > layoutId) {
+        if (0 >= layoutId) {
             TextView errorText = new TextView(mContext);
             errorText.setText(this.getClass().getSimpleName() + "的Fragment_LayoutId出现错误");
             errorText.setGravity(Gravity.CENTER);
@@ -55,12 +56,12 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
             errorText.setLayoutParams(errorTextLayoutParams);
             mView = errorText;
         } else {
-            mView = View.inflate(mContext, layoutId, null);
+            mView = inflater.inflate(layoutId, null);
             try {
                 return mView;
             } finally {
                 initWidgets(mView);
-                isViewInit = true;
+                isViewInited = true;
             }
         }
         return mView;
@@ -85,7 +86,7 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (isViewInit) {
+        if (isViewInited) {
             if (hidden) {
                 onInVisibility();
             } else {
@@ -95,16 +96,18 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
             //View未初始化时, Fragment第一次进入, 可以初始创建一些目录或者文件
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
-        if (((NewLqActivity) mContext).isFinishing()) {
+        if (fragActivity.isFinishing()) {
             onReleaseRes();
         }
     }
 
     /**
-     * 释放资源
+     * 释放关键资源，非关键资源可以 ↓
+     * @see #onStop()
      */
     protected void onReleaseRes(){
 
@@ -131,7 +134,7 @@ public abstract class NewLqFragment extends Fragment implements View.OnClickList
 
     /**
      * 操作本地数据 例如 恢复状态 恢复数据
-     * @param savedInstanceState
+     * @param savedInstanceState 恢复数据
      */
     protected abstract void initData(Bundle savedInstanceState);
 
