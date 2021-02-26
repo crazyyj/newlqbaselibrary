@@ -35,7 +35,7 @@ public class TextUtils {
     }
 
     public static final boolean isEmpty(String text){
-        return "null".equalsIgnoreCase(text) || TextUtils.isEmpty(text);
+        return "null".equalsIgnoreCase(text) || android.text.TextUtils.isEmpty(text);
     }
 
     /**

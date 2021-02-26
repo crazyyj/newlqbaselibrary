@@ -1,5 +1,6 @@
 package com.andlot.newlqlibrary.helper;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -7,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
-import android.support.v7.app.AlertDialog;
 
 import com.andlot.newlqlibrary.utils.DateUtils;
 

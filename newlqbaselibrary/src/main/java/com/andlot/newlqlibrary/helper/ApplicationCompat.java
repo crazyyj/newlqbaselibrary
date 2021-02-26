@@ -15,7 +15,7 @@ public class ApplicationCompat {
     private static Thread mMainThread;
     private static Context mApplication;
 
-    public final static void init(Context context){
+    public static void init(Context context){
         mHandler = new Handler();
         mMainThread = Thread.currentThread();
         mMainThreadId = android.os.Process.myTid();

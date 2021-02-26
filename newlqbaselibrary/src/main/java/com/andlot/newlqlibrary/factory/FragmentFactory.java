@@ -1,7 +1,7 @@
 package com.andlot.newlqlibrary.factory;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.andlot.newlqlibrary.base.NewLqFragment;
@@ -29,7 +29,7 @@ public class FragmentFactory {
      * 创建Fragment 方法
      * @param fragAllWay        Fragment 全路径
      * @param bunlde             Fragment.setArgments(Bundle b)// ****只在第一次可传 如果第二次再传的话 会报错****
-     * @see android.support.v4.app.Fragment#setArguments(Bundle)
+     * @see android.app.Fragment#setArguments(Bundle)
      * @return Fragment 实例
      */
     public static Fragment createFragment(String fragAllWay, Bundle bunlde) {

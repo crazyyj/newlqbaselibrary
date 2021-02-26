@@ -131,7 +131,6 @@ public class SaveBitmapTask extends AsyncTask<String, Integer, Boolean> {
     private String generateBMFileName(){
         return new SimpleDateFormat("yyMMddHHmmssSS")
                 .format(new Date(System.currentTimeMillis())) + IOUtils.JPG;
-
     }
 
     private SaveFinishListener mSaveFinishListener;

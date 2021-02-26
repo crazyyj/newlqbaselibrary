@@ -1,14 +1,13 @@
 package com.andlot.newlqlibrary.base;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.IdRes;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,14 @@ import android.widget.EditText;
 import com.andlot.newlqlibrary.helper.ActivityManager;
 import com.andlot.newlqlibrary.loader.DataLoader;
 import com.andlot.newlqlibrary.utils.CommonUtils;
+import com.andlot.newlqlibrary.utils.TextUtils;
 
 /**
  * Activity 开发模板
  *
  * @author Newlq
  */
-public abstract class NewLqActivity extends AppCompatActivity implements View.OnClickListener, Handler.Callback{
+public abstract class NewLqActivity extends Activity implements View.OnClickListener {
 
     protected Handler mHandler;
     protected FragmentManager mFragmentManager;
@@ -40,53 +40,12 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         }
         setContentView(layoutId);
         ActivityManager.getInstance().addActivity(this);
-        mHandler = new Handler(this);
-        mFragmentManager = getSupportFragmentManager();
+//        mFragmentManager = getSupportFragmentManager();
 
         initWidgets();
         handlerIntent(getIntent());
         initProjectFromAsync(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, mLoaderCallbacks);
 
-    }
-
-    private LoaderManager.LoaderCallbacks mLoaderCallbacks= new LoaderManager.LoaderCallbacks<Object>() {
-
-        @Override
-        public Loader<Object> onCreateLoader(int id, Bundle args) {
-            return new DataLoader<Object>(getApplicationContext()){
-
-                @Override
-                public Object loadInBackground() {
-                    return runOnWorkThread();
-                }
-            };
-        }
-
-        @Override
-        public void onLoadFinished(Loader<Object> loader, Object data) {
-
-        }
-
-        @Override
-        public void onLoaderReset(Loader<Object> loader) {
-
-        }
-    };
-
-    protected Object runOnWorkThread() {
-        return null;
-    }
-
-
-    /**
-     *
-     * @param id View的id
-     * @param <T> View的子类
-     * @return View对象
-     */
-    public <T extends View> T findViewById_self(@IdRes int id) {
-        return (T) super.findViewById(id);
     }
 
     /**
@@ -132,7 +91,6 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
                 initListener();
             }
         });
-
     }
 
     @Override
@@ -157,7 +115,7 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
      * @param action
      */
     protected void gotoOther(String action){
-        if (!com.andlot.newlqlibrary.utils.TextUtils.isEmpty(action)) {
+        if (!TextUtils.isEmpty(action)) {
             Intent intent = new Intent(action);
             if (!(getPackageManager().queryIntentActivities(intent, 0).isEmpty())) {
                 startActivity(intent);
@@ -197,8 +155,6 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
         }
         return super.dispatchTouchEvent(ev);
     }
-
-
 
     private boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
@@ -245,14 +201,6 @@ public abstract class NewLqActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
 
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (msg.obj != null && msg.what != 0) {
-            //删除了所有消息obj 会被置空, 再实际项目中 需要判断
-        }
-        return true;
     }
 
     @Override

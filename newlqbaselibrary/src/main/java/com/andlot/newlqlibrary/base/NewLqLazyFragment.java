@@ -1,6 +1,7 @@
 package com.andlot.newlqlibrary.base;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,7 @@ public abstract class NewLqLazyFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity context) {
+    public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
         isViewInit = false;
@@ -77,7 +78,7 @@ public abstract class NewLqLazyFragment extends Fragment {
     }
 
     /**
-     * 释放资源
+     * 后台不可见，并且Activity被关闭时 释放少量资源
      */
     protected void onReleaseRes(){
 

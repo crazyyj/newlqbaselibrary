@@ -1,5 +1,6 @@
 package com.andlot.newlqlibrary.utils;
 
+import android.annotation.SuppressLint;
 import android.widget.Toast;
 
 //import android.support.design.widget.Snackbar;
