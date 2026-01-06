@@ -1,1 +1,13 @@
-include ':app', ':newlqbaselibrary'
+include ':app'
+
+// 核心库
+include ':debugview'
+include ':lib_base'
+
+// 扩展图
+include ':lib_logview'
+include ':deviceinfo'
+include ':lib_touch_restore'
+include ':lib_monitor_field'
+include ':lib_monitor_top'
+include ':lib_jvmti'

@@ -1,28 +1,50 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdk 33
+
+    namespace 'com.debugview.sample'
+
     defaultConfig {
-        applicationId "andlog.com.newlqbaselibrary"
-        minSdkVersion 14
-        targetSdkVersion 25
+        applicationId "com.debugview.sample"
+        minSdk 23
+
         versionCode 1
         versionName "1.0"
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            it.abiFilters('arm64-v8a')
+        }
     }
+
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+
+    }
+
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-   /* androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })*/
-    compile project(':newlqbaselibrary')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':lib_base')
+    implementation project(':debugview')
+    implementation project(':lib_jvmti')
+    implementation project(':lib_logview')
+    implementation project(':lib_monitor_top')
+    implementation project(':deviceinfo')
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }

@@ -1,0 +1,34 @@
+plugins {
+    id 'com.android.library'
+}
+
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 23
+    }
+    namespace "com.newchar.lib.base"
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly "androidx.viewpager:viewpager:1.0.0"
+}
