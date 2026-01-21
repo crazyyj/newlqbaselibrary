@@ -10,18 +10,29 @@ import com.newchar.debugview.utils.DebugUtils;
  * @since 严格模式.
  * @since 迭代版本，（以及描述）
  */
-class Strict {
+public class Strict {
 
+    /**
+     * 开启全部严格模式策略。
+     */
     public static void startAll() {
         thread(true);
         vm(true);
     }
 
+    /**
+     * 关闭全部严格模式策略。
+     */
     public static void stopAll() {
         thread(false);
         vm(false);
     }
 
+    /**
+     * 配置线程严格模式策略。
+     *
+     * @param start 是否开启
+     */
     public static void thread(boolean start) {
         if (!DebugUtils.isDebuggable()) {
             return;
@@ -43,6 +54,11 @@ class Strict {
 
     }
 
+    /**
+     * 配置虚拟机严格模式策略。
+     *
+     * @param start 是否开启
+     */
     public static void vm(boolean start) {
         if (!DebugUtils.isDebuggable()) {
             return;
@@ -59,6 +75,11 @@ class Strict {
         }
     }
 
+    /**
+     * 构建线程违规监听器。
+     *
+     * @return 监听器
+     */
     private static StrictMode.OnThreadViolationListener getViolationListener() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             return violation -> {

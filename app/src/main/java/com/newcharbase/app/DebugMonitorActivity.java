@@ -7,9 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.newcharbase.jvmti.DebugStackMotion;
-import com.newcharbase.jvmti.DebugStackMotionAgent;
-import com.newcharbase.jvmti.DebugStackMotionCallback;
+import com.newchar.monitor.jvmti.DebugStackMotionAgent;
+import com.newchar.monitor.jvmti.DebugStackMotionCallback;
+import com.newchar.monitor.jvmti.DebugStackMotion;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Method;
@@ -19,6 +19,11 @@ public class DebugMonitorActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private Handler handler;
 
+    /**
+     * 初始化调试监控界面。
+     *
+     * @param savedInstanceState 状态
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,22 +36,26 @@ public class DebugMonitorActivity extends AppCompatActivity {
         DebugStackMotionAgent.startAgent();
         DebugStackMotion.setCallback(new DebugStackMotionCallback() {
             @Override
-            public void onMethodEnter(Class<?> clazz, Method method) {
-                addLog("Enter: " + clazz.getName() + "#" + method.getName());
+            public void onMethodVisit(Method method, boolean isEnter, Throwable error) {
+                String state = isEnter ? "Enter" : "Exit";
+                addLog(state + ": " + method.getDeclaringClass().getName() + "#" + method.getName());
             }
+
             @Override
-            public void onMethodExit(Class<?> clazz, Method method) {
-                addLog("Exit: " + clazz.getName() + "#" + method.getName());
-            }
-            @Override
-            public void onVariableChanged(Class<?> clazz, Method method, String varName, Object newValue) {
-                addLog("VarChanged: " + clazz.getName() + "#" + method.getName() + " - " + varName + " = " + newValue);
+            public void onVariableVisit(java.lang.reflect.Field field, boolean isSet, Throwable error) {
+                String state = isSet ? "Set" : "Get";
+                addLog("Var" + state + ": " + field.getDeclaringClass().getName() + "#" + field.getName());
             }
         });
         // 示例注册监控方法
         // DebugStackMotion.registerClassAndMethod(YourClass.class, "yourMethod");
     }
 
+    /**
+     * 添加日志并刷新列表。
+     *
+     * @param log 日志
+     */
     private void addLog(String log) {
         handler.post(() -> {
             eventLogs.add(0, log);
@@ -54,6 +63,9 @@ public class DebugMonitorActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 释放资源。
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

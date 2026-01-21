@@ -4,10 +4,10 @@ plugins {
 
 android {
     namespace 'com.newchar.logview'
-    compileSdk 33
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdk 23
+        minSdk rootProject.ext.minSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    compileOnly project(':debugview')
+    compileOnly project(':lib_debug_core')
     compileOnly project(':lib_base')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

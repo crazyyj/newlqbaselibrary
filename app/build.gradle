@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 33
+    compileSdk rootProject.ext.compileSdkVersion
 
     namespace 'com.debugview.sample'
 
     defaultConfig {
         applicationId "com.debugview.sample"
-        minSdk 23
+        minSdk rootProject.ext.minSdkVersion
 
         versionCode 1
         versionName "1.0"
@@ -40,10 +40,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_base')
-    implementation project(':debugview')
-    implementation project(':lib_jvmti')
+    implementation project(':lib_debug_core')
+    implementation project(':lib_debug_monitor')
     implementation project(':lib_logview')
-    implementation project(':lib_monitor_top')
     implementation project(':deviceinfo')
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
